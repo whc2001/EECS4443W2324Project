@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Demo_TiltBall</string>
-    <string name="setuptitletext">Demo_TiltBall</string>
-    <string name="paramlabelorderofcontroltext">Order of control</string>
-    <string name="paramlabelgaintext">Gain</string>
-    <string name="paramlabelpathwidthtext">Path width</string>
-    <string name="paramlabelpathtypetext">Path type</string>
+    <string name="app_name">Tilt-Controlled TikTok Experiment</string>
+    <string name="setuptitletext">Tilt-Controlled\nTikTok\nExperiment</string>
+    <string name="setuptitlesubtext">EECS 4443 W23-24\nGroup R</string>
+    <string name="paramlabelsubjectid">Subject #</string>
+    <string name="setupitemcontrolmethod">Control Method</string>
+    <string name="setupitemtrials">Trials</string>
     <string name="button01text">OK</string>
     <string name="button03text">Exit</string>
-
 </resources>

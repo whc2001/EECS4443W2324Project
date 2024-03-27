@@ -1,4 +1,4 @@
-package ca.yorku.eecs.groupr.gyrotiktok;
+package ca.yorku.eecs.groupr.tilttiktok;
 
 import android.content.Context;
 import android.graphics.Bitmap;

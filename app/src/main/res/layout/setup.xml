@@ -15,7 +15,7 @@
                   android:orientation="vertical">
 
         <TextView
-            android:id="@+id/setupTitle"
+            android:id="@+id/lblSetupTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ff234567"
@@ -26,7 +26,21 @@
             android:paddingTop="20dp"
             android:text="@string/setuptitletext"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="25sp"/>
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/lblSetupSubTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff234567"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/setuptitlesubtext"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="10sp"/>
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,14 +53,14 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/paramLabelOrderOfControl"
+                    android:id="@+id/lblSubjectID"
                     android:gravity="right"
                     android:paddingRight="5dp"
-                    android:text="@string/paramlabelorderofcontroltext"
+                    android:text="@string/paramlabelsubjectid"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <Spinner
-                    android:id="@+id/paramOrderOfControl"
+                    android:id="@+id/cmbSubjectID"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -55,14 +69,14 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/paramLabelGain"
+                    android:id="@+id/lblControlMethod"
                     android:gravity="right"
                     android:paddingRight="5dp"
-                    android:text="@string/paramlabelgaintext"
+                    android:text="@string/setupitemcontrolmethod"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <Spinner
-                    android:id="@+id/paramGain"
+                    android:id="@+id/cmbControlMethod"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -71,30 +85,14 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/paramLabelPathType"
+                    android:id="@+id/lblTrials"
                     android:gravity="right"
                     android:paddingRight="5dp"
-                    android:text="@string/paramlabelpathtypetext"
+                    android:text="@string/setupitemtrials"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <Spinner
-                    android:id="@+id/paramPathType"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/paramLabelPathWidth"
-                    android:gravity="right"
-                    android:paddingRight="5dp"
-                    android:text="@string/paramlabelpathwidthtext"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <Spinner
-                    android:id="@+id/paramPathWidth"
+                    android:id="@+id/cmbTrials"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -110,21 +108,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Button01"
+                android:id="@+id/btnOK"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="clickOK"
+                android:onClick="btnOK_Click"
                 android:text="@string/button01text"
                 android:textAppearance="?android:attr/textAppearanceMedium">
             </Button>
 
             <Button
-                android:id="@+id/Button03"
+                android:id="@+id/btnExit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="clickExit"
+                android:onClick="btnExit_Click"
                 android:text="@string/button03text"
                 android:textAppearance="?android:attr/textAppearanceMedium">
             </Button>
