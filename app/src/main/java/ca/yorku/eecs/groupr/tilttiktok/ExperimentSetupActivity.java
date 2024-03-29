@@ -51,6 +51,21 @@ public class ExperimentSetupActivity extends Activity
 		startActivity(i);
 	}
 
+	public void btnOK2_Click(View view)
+	{
+		// get the selected values from the spinners
+		String subjectID = cmbSubjectID.getSelectedItem().toString();
+		ControlMethod controlMethod = ControlMethod.fromString(cmbControlMethod.getSelectedItem().toString());
+		int trials = Integer.parseInt(cmbTrials.getSelectedItem().toString());
+
+		// construct the bundle and start the experiment activity
+		Bundle b = new Bundle();
+		b.putParcelable("setup", new ExperimentSetup(subjectID, controlMethod, trials));
+		Intent i = new Intent(getApplicationContext(), TouchModeActivity.class);
+		i.putExtras(b);
+		startActivity(i);
+	}
+
 	/** Called when the "Exit" button is pressed. */
 	public void btnExit_Click(View view)
 	{
