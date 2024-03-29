@@ -43,15 +43,10 @@ public class ExperimentActivity extends Activity {
                 Toast.makeText(this, "Sensor error, the experiment cannot be performed in tilt mode.", Toast.LENGTH_LONG).show();
                 this.finish();
             }
-            tdl = new TiltDirectionListener(0.6f, 0.25f, new TiltDirectionListener.ITiltDirectionCallback() {
+            tdl = new TiltDirectionListener(new TiltDirectionListener.ITiltDirectionCallback() {
                 @Override
-                public void onTiltDirection(int direction) {
-                    StringBuilder sb = new StringBuilder();
-                    if ((direction & TiltDirectionListener.UP) != 0) sb.append("UP ");
-                    if ((direction & TiltDirectionListener.DOWN) != 0) sb.append("DOWN ");
-                    if ((direction & TiltDirectionListener.LEFT) != 0) sb.append("LEFT ");
-                    if ((direction & TiltDirectionListener.RIGHT) != 0) sb.append("RIGHT ");
-                    Log.i(MYDEBUG, sb.toString());
+                public void onTiltDirection(TiltDirection direction) {
+                    Log.i(MYDEBUG, direction.toString());
                 }
             });
         }
