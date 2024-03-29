@@ -118,6 +118,16 @@
             </Button>
 
             <Button
+                android:id="@+id/btnOK2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="btnOK2_Click"
+                android:text="@string/button02text"
+                android:textAppearance="?android:attr/textAppearanceMedium">
+            </Button>
+
+            <Button
                 android:id="@+id/btnExit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
