@@ -11,7 +11,7 @@ public class ExperimentSetupActivity extends Activity
 {
 	final static String[] SUBJECT_ID = {"1", "2", "3", "4", "5", "6", "7", "8"};
 	final static String[] CONTROL_METHOD = {ControlMethod.TOUCH.toString(), ControlMethod.TILT.toString()};
-	final static String[] TRIALS = {"1", "2", "3", "4", "5"};
+	final static String[] TRIALS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
 	Spinner cmbSubjectID, cmbControlMethod, cmbTrials;
 
@@ -32,7 +32,7 @@ public class ExperimentSetupActivity extends Activity
 
 		cmbTrials = (Spinner) findViewById(R.id.cmbTrials);
 		cmbTrials.setAdapter(new ArrayAdapter<CharSequence>(this, R.layout.spinnerstyle, TRIALS));
-		cmbTrials.setSelection(0);
+		cmbTrials.setSelection(TRIALS.length - 1);
 	}
 
 	// called when the "OK" button is tapped
