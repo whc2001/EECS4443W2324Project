@@ -4,8 +4,11 @@ package ca.yorku.eecs.groupr.tilttiktok;
 
 public class ExperimentCoordinator {
     private ExperimentCoordinatorCallback callback;
+    private ExperimentSetup setup;
+
     private boolean isExperimentRunning = false;
-    private int currentTrial = 0;
+    private long experimentStartTime;
+    private int currentTrial;
     private int totalTrials;
     private long currentTrialStartTime;
     private ExperimentAction[] experimentActions;
@@ -22,9 +25,9 @@ public class ExperimentCoordinator {
         }
     }
 
-    public ExperimentCoordinator(ExperimentCoordinatorCallback callback, int totalTrials) {
+    public ExperimentCoordinator(ExperimentSetup setup, ExperimentCoordinatorCallback callback) {
         this.callback = callback;
-        this.totalTrials = totalTrials;
+        this.totalTrials = setup.getTrials();
         durationEachTrial = new long[totalTrials];
         incorrectActionEachTrial = new int[totalTrials];
         experimentActions = new ExperimentAction[totalTrials];
@@ -32,6 +35,7 @@ public class ExperimentCoordinator {
 
     public void startExperiment() {
         isExperimentRunning = true;
+        experimentStartTime = System.currentTimeMillis();
         currentTrial = 0;
         callback.onExperimentStart();
         startNextTrial();
@@ -39,7 +43,8 @@ public class ExperimentCoordinator {
 
     public void endExperiment() {
         isExperimentRunning = false;
-        callback.onExperimentFinished(durationEachTrial, incorrectActionEachTrial);
+        ExperimentResult result = new ExperimentResult(setup, experimentStartTime, durationEachTrial, incorrectActionEachTrial);
+        callback.onExperimentFinished(result);
     }
 
     public void performAction(ExperimentAction action) {

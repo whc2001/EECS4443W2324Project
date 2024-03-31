@@ -4,7 +4,7 @@ package ca.yorku.eecs.groupr.tilttiktok;
 
 public interface ExperimentCoordinatorCallback {
     void onExperimentStart();
-    void onExperimentFinished(long[] durationEachTrial, int[] incorrectActionEachTrial);
+    void onExperimentFinished(ExperimentResult result);
     void onNewTrial(int currentTrial, ExperimentAction action);
     void onIncorrectAction(int currentTrial, ExperimentAction action);
 }

@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ExperimentSetup implements Parcelable {
-    public String subjectID;
-    public ControlMethod controlMethod;
-    public int trials;
+    private String subjectID;
+    private ControlMethod controlMethod;
+    private int trials;
 
     public String getSubjectID() {
         return subjectID;

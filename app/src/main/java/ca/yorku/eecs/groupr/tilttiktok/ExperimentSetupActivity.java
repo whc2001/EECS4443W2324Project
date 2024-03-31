@@ -9,7 +9,7 @@ import android.widget.Spinner;
 
 public class ExperimentSetupActivity extends Activity
 {
-	final static String[] SUBJECT_ID = {"1", "2", "3", "4", "5", "6", "7", "8"};
+	final static String[] SUBJECT_ID = {"01", "02", "03", "04", "05", "06", "07", "08"};
 	final static String[] CONTROL_METHOD = {ControlMethod.TOUCH.toString(), ControlMethod.TILT.toString()};
 	final static String[] TRIALS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
