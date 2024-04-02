@@ -34,22 +34,17 @@ public class TouchModeActivity extends Activity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm = (SensorManager) getSystemService(SENSOR_SERVICE);
             gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
             if (gyro == null) {
                 Toast.makeText(this, "Sensor error, the experiment cannot be performed in tilt mode.", Toast.LENGTH_LONG).show();
                 this.finish();
             }
-            tdl = new TiltDirectionListener(0.6f, 0.25f, new TiltDirectionListener.ITiltDirectionCallback() {
+            tdl = new TiltDirectionListener(new TiltDirectionListener.ITiltDirectionCallback() {
                 @Override
-                public void onTiltDirection(int direction) {
-                    StringBuilder sb = new StringBuilder();
-                    if ((direction & TiltDirectionListener.UP) != 0) sb.append("UP ");
-                    if ((direction & TiltDirectionListener.DOWN) != 0) sb.append("DOWN ");
-                    if ((direction & TiltDirectionListener.LEFT) != 0) sb.append("LEFT ");
-                    if ((direction & TiltDirectionListener.RIGHT) != 0) sb.append("RIGHT ");
-                    Log.i(MYDEBUG, sb.toString());
+                public void onTiltDirection(TiltDirection direction) {
+                    Log.i(MYDEBUG, direction.toString());
                 }
             });
         }
@@ -74,14 +69,14 @@ public class TouchModeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm.registerListener(tdl, gyro, SensorManager.SENSOR_DELAY_GAME);
         }
     }
     @Override
     protected void onPause() {
         super.onPause();
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm.unregisterListener(tdl);
         }
     }

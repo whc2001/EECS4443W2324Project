@@ -36,7 +36,7 @@ public class ExperimentActivity extends Activity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm = (SensorManager) getSystemService(SENSOR_SERVICE);
             gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
             if (gyro == null) {
@@ -72,7 +72,7 @@ public class ExperimentActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm.registerListener(tdl, gyro, SensorManager.SENSOR_DELAY_GAME);
         }
     }
@@ -80,7 +80,7 @@ public class ExperimentActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (setup.controlMethod == ControlMethod.TILT) {
+        if (setup.getControlMethod() == ControlMethod.TILT) {
             sm.unregisterListener(tdl);
         }
     }
