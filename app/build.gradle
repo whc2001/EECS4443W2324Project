@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "ca.yorku.eecs.groupr.tilttiktok"
-        minSdkVersion 13
-        targetSdkVersion 27
+        minSdkVersion 30
+        targetSdkVersion 30
     }
 
     buildTypes {
@@ -16,4 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+}
+
+dependencies {
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }
