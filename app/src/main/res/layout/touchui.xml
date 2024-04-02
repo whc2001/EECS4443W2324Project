@@ -10,12 +10,12 @@
         android:layout_weight="1">
 
         <!-- Content Area -->
-        <ImageView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/content_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ball" />
+            android:orientation="vertical"
+            />
 
         <!-- Buttons Column -->
         <LinearLayout
@@ -37,6 +37,7 @@
 
             <!-- Like Button -->
             <ImageButton
+                android:id="@+id/like_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon"
@@ -46,6 +47,7 @@
 
             <!-- Comment Button -->
             <ImageButton
+                android:id="@+id/comment_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon"
