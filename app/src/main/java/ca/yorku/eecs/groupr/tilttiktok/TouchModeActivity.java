@@ -93,7 +93,10 @@ public class TouchModeActivity extends Activity {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 scrollPrev();
+
+                likeButton.setImageResource(R.drawable.heartfill);
             }
         });
         commentButton = findViewById(R.id.comment_button);
