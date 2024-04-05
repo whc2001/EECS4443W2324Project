@@ -35,12 +35,14 @@ public class ExperimentResultExporter {
         experimentDataStr.append("Experiment Start Time: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA).format(result.getExperimentStartTime())).append("\n");
         experimentDataStr.append("\n");
 
+        experimentDataStr.append("DV: duration (ms)\n");
         long[] trialDurations = result.getDurationEachTrial();
         for (int i = 0; i < trialDurations.length; ++i) {
-            experimentDataStr.append(Math.round(trialDurations[i] / 1000.0));
+            experimentDataStr.append(trialDurations[i]);
             experimentDataStr.append(i == trialDurations.length - 1 ? "\n" : ",");
         }
 
+        experimentDataStr.append("DV: incorrect actions (times)\n");
         int[] incorrectTimes = result.getIncorrectActionEachTrial();
         for (int i = 0; i < incorrectTimes.length; ++i) {
             experimentDataStr.append(incorrectTimes[i]);
