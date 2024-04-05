@@ -51,7 +51,7 @@ public class ExperimentCoordinator {
     public void performAction(ExperimentAction action) {
         if (isExperimentRunning) {
             if (action != experimentActions[currentTrial]) {
-                callback.onIncorrectAction(currentTrial, action);
+                callback.onIncorrectAction(currentTrial, experimentActions[currentTrial]);
                 ++incorrectActionEachTrial[currentTrial];
             } else {
                 long duration = System.currentTimeMillis() - currentTrialStartTime;
