@@ -2,6 +2,8 @@ package ca.yorku.eecs.groupr.tilttiktok;
 
 // Class for controlling the experiment process
 
+import java.util.Random;
+
 public class ExperimentCoordinator {
     private ExperimentCoordinatorCallback callback;
     private ExperimentSetup setup;
@@ -14,10 +16,21 @@ public class ExperimentCoordinator {
     private ExperimentAction[] experimentActions;
     private long[] durationEachTrial;
     private int[] incorrectActionEachTrial;
+    private Random r = new Random();
+
+    private void initializeRandomActions() {
+        experimentActions[0] = ExperimentAction.values()[r.nextInt(ExperimentAction.values().length)];
+        for (int i = 1; i < totalTrials; i++) {
+            ExperimentAction action;
+            do {
+                action = ExperimentAction.values()[r.nextInt(ExperimentAction.values().length)];
+            } while (action == experimentActions[i - 1]);
+            experimentActions[i] = action;
+        }
+    }
 
     private void startNextTrial() {
         if (currentTrial < totalTrials) {
-            experimentActions[currentTrial] = ExperimentAction.getRandomAction();
             callback.onNewTrial(currentTrial, experimentActions[currentTrial]);
             currentTrialStartTime = System.currentTimeMillis();
         } else {
@@ -35,6 +48,7 @@ public class ExperimentCoordinator {
     }
 
     public void startExperiment() {
+        initializeRandomActions();
         isExperimentRunning = true;
         experimentStartTime = System.currentTimeMillis();
         currentTrial = 0;
