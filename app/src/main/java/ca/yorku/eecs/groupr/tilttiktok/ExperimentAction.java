@@ -16,17 +16,9 @@ public enum ExperimentAction {
     ;
 
     private String displayName;
-    private static final List<ExperimentAction> values =
-            Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int size = values.size();
-    private static final Random r = new Random();
 
     ExperimentAction(String displayName) {
         this.displayName = displayName;
-    }
-
-    public static ExperimentAction getRandomAction() {
-        return values.get(r.nextInt(size));
     }
 
     @Override
