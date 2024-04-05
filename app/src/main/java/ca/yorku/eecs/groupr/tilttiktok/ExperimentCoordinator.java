@@ -26,6 +26,7 @@ public class ExperimentCoordinator {
     }
 
     public ExperimentCoordinator(ExperimentSetup setup, ExperimentCoordinatorCallback callback) {
+        this.setup = setup;
         this.callback = callback;
         this.totalTrials = setup.getTrials();
         durationEachTrial = new long[totalTrials];
