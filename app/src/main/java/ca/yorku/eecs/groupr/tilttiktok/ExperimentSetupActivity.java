@@ -55,7 +55,7 @@ public class ExperimentSetupActivity extends Activity
 		// construct the bundle and start the experiment activity
 		Bundle b = new Bundle();
 		b.putParcelable("setup", new ExperimentSetup(subjectID, controlMethod, trials));
-		Intent i = new Intent(getApplicationContext(), controlMethod == ControlMethod.TOUCH ? TouchModeActivity.class : null);
+		Intent i = new Intent(getApplicationContext(), controlMethod == ControlMethod.TOUCH ? TouchModeActivity.class : TiltModeActivity.class);
 		i.putExtras(b);
 		startActivity(i);
 	}
