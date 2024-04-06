@@ -26,6 +26,10 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
+            android:name="ca.yorku.eecs.groupr.tilttiktok.TiltModeActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
             android:name="ca.yorku.eecs.groupr.tilttiktok.ExperimentResultActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>

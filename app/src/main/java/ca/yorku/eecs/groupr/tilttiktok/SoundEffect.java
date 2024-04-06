@@ -11,7 +11,7 @@ public class SoundEffect {
     public SoundEffect(Activity ctx) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
 
-        soundPool = new SoundPool.Builder().setMaxStreams(1).setAudioAttributes(audioAttributes).build();
+        soundPool = new SoundPool.Builder().setMaxStreams(2).setAudioAttributes(audioAttributes).build();
         correctSound = soundPool.load(ctx, R.raw.correct, 1);
         incorrectSound = soundPool.load(ctx, R.raw.incorrect, 1);
     }

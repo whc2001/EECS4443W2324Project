@@ -4,53 +4,84 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray">
 
-    <FrameLayout
+    <!-- ViewPager2 filling the entire background -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+    <!-- Text UI at the top of the screen -->
+    <TextView
+        android:id="@+id/lblDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text=""
+        android:visibility="visible"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentTop="true"/>
+
+    <!-- Button below the text -->
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblDisplay"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_experiment_button_text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <FrameLayout
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_centerInParent="true">
 
-        <!-- Pie Slice Top -->
-        <ImageView
+            <!-- Pie Slice Top -->
+            <ImageView
+            android:id="@+id/imgTop"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="top|center_horizontal"
             android:src="@drawable/raidalmessage" />
 
-        <!-- Pie Slice Bottom -->
-        <ImageView
+            <!-- Pie Slice Bottom -->
+            <ImageView
+            android:id="@+id/imgBottom"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="bottom|center_horizontal"
             android:src="@drawable/shareradial" />
 
-        <!-- Pie Slice Left -->
-
-        <!-- Pie Slice Right -->
-        <ImageView
+            <!-- Pie Slice Left -->
+            <ImageView
+            android:id="@+id/imgLeft"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="left|center_vertical"
             android:src="@drawable/radialquit" />
 
-        <!-- Icon Area -->
-        <ImageView
+            <!-- Pie Slice Right -->
+            <ImageView
+            android:id="@+id/imgRight"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="right|center_vertical"
             android:src="@drawable/radialheart" />
 
-        <ImageView
+            <!-- Icon Area -->
+            <ImageView
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:layout_gravity="right|center_vertical"
             android:src="@drawable/ball" />
 
         <!-- Pie Menu Icon -->
-        <ImageView
+            <ImageView
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:layout_gravity="left|center_vertical"
             android:src="@drawable/ball" />
 
-    </FrameLayout>
+        </FrameLayout>
 </RelativeLayout>
