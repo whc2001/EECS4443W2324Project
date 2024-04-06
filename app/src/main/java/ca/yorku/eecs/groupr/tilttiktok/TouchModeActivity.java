@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,14 +40,23 @@ public class TouchModeActivity extends Activity {
 
     private ViewPager2 vpContent;
     private ImageButton likeButton, commentButton, shareButton;
+    private boolean isLiked, isCommented, isShared;
+    ExperimentCoordinator coord;
+    TextView textDisplay;
 
     private ViewPager2.OnPageChangeCallback onPageChange = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             super.onPageSelected(position);
             if (position > currentPage) {
+                if(coord != null) {
+                    coord.performAction(ExperimentAction.NEXT);
+                }
                 Log.i(MYDEBUG, ">>>NEXT>>>");
             } else if (position < currentPage) {
+                if(coord != null) {
+                    coord.performAction(ExperimentAction.PREVIOUS);
+                }
                 Log.i(MYDEBUG, "<<<PREV<<<");
             }
             currentPage = position;
@@ -55,6 +65,7 @@ public class TouchModeActivity extends Activity {
         @Override
         public void onPageScrollStateChanged(int state) {
             super.onPageScrollStateChanged(state);
+            resetButtonStates();
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 // If the user scrolls to the first page, teleport silently to the second last page for infinite scrolling effect
                 // When teleporting temporarily unregister the callback to avoid multiple scroll events
@@ -76,34 +87,131 @@ public class TouchModeActivity extends Activity {
     };
 
     public void scrollNext() {
+        resetButtonStates();
         vpContent.setCurrentItem(currentPage + 1, true);
     }
 
     public void scrollPrev() {
+        resetButtonStates();
         vpContent.setCurrentItem(currentPage - 1, true);
     }
 
+    public void resetButtonStates() {
+        isLiked = false;
+        likeButton.setImageResource(R.drawable.heart);
+
+        isCommented = false;
+        commentButton.setImageResource(R.drawable.message);
+
+        isShared = false;
+        shareButton.setImageResource(R.drawable.arrowblank);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.touchui);
+        // Retrieve the passed ExperimentSetup object
+        setup = getIntent().getParcelableExtra("setup");
+
+        textDisplay = (TextView) findViewById(R.id.touchuitextdisplay);
+        ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
+			@Override
+			public void onExperimentStart() {
+				Log.e("ExperimentCoordinator", "onExperimentStart");
+			}
+
+			@Override
+			public void onNewTrial(int trial, ExperimentAction action) {
+				Log.e("ExperimentCoordinator", "onNewTrial: " + trial + " " + action);
+				textDisplay.setText(action.toString());
+			}
+
+			@Override
+			public void onIncorrectAction(int trial, ExperimentAction action) {
+				Log.e("ExperimentCoordinator", "onIncorrectAction: " + trial + " " + action);
+			}
+
+			@Override
+			public void onExperimentFinished(ExperimentResult result) {
+				Log.e("ExperimentCoordinator", "onExperimentFinished");
+				textDisplay.setText("-Experiment Finished-");
+				for(int i = 0; i < result.getDurationEachTrial().length; i++) {
+					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getDurationEachTrial()[i] + "ms");
+				}
+
+				for(int i = 0; i < result.getIncorrectActionEachTrial().length; i++) {
+					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getIncorrectActionEachTrial()[i] + " incorrect actions");
+				}
+
+				ExperimentResultExporter.write(result);
+			}
+		};
+
+		ExperimentSetup setup = new ExperimentSetup("99", ControlMethod.TOUCH, 10);
+		coord = new ExperimentCoordinator(setup, callback);
+		coord.startExperiment();
+
+        //onCreate set the states to false
+        isLiked = false;
+        isCommented = false;
+        isShared = false;
 
         vpContent = findViewById(R.id.content_view);
+
         likeButton = findViewById(R.id.like_button);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                scrollPrev();
-
-                likeButton.setImageResource(R.drawable.heartfill);
+                // scrollPrev();
+                // collect data
+                if(coord != null) {
+                    coord.performAction(ExperimentAction.LIKE);
+                }
+                // Toggle the state
+                isLiked = !isLiked;
+                // Change the button image based on the new state
+                if (isLiked) {
+                    likeButton.setImageResource(R.drawable.heartfill);
+                } else {
+                    likeButton.setImageResource(R.drawable.heart);
+                }
             }
         });
         commentButton = findViewById(R.id.comment_button);
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollNext();
+                // scrollNext();
+                if(coord != null) {
+                    coord.performAction(ExperimentAction.COMMENT);
+                }
+                // Toggle the state
+                isCommented = !isCommented;
+                // Change the button image based on the new state
+                if (isCommented) {
+                    commentButton.setImageResource(R.drawable.messagefill);
+                } else {
+                    commentButton.setImageResource(R.drawable.message);
+                }
+            }
+        });
+
+        shareButton = findViewById(R.id.share_button);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // scrollNext();
+                if(coord != null) {
+                    coord.performAction(ExperimentAction.SHARE);
+                }
+                // Toggle the state
+                isShared = !isShared;
+                // Change the button image based on the new state
+                if (isShared) {
+                    shareButton.setImageResource(R.drawable.arrowfill);
+                } else {
+                    shareButton.setImageResource(R.drawable.arrowblank);
+                }
             }
         });
 

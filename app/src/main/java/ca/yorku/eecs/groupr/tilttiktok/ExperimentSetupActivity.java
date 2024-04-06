@@ -62,54 +62,54 @@ public class ExperimentSetupActivity extends Activity
 	public void btnOK2_Click(View view)
 	{
 //		// get the selected values from the spinners
-//		String subjectID = cmbSubjectID.getSelectedItem().toString();
-//		ControlMethod controlMethod = ControlMethod.fromString(cmbControlMethod.getSelectedItem().toString());
-//		int trials = Integer.parseInt(cmbTrials.getSelectedItem().toString());
+		String subjectID = cmbSubjectID.getSelectedItem().toString();
+		ControlMethod controlMethod = ControlMethod.fromString(cmbControlMethod.getSelectedItem().toString());
+		int trials = Integer.parseInt(cmbTrials.getSelectedItem().toString());
+
+		// construct the bundle and start the experiment activity
+		Bundle b = new Bundle();
+		b.putParcelable("setup", new ExperimentSetup(subjectID, controlMethod, trials));
+		Intent i = new Intent(getApplicationContext(), TouchModeActivity.class);
+		i.putExtras(b);
+		startActivity(i);
+//		ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
+//			@Override
+//			public void onExperimentStart() {
+//				Log.e("ExperimentCoordinator", "onExperimentStart");
+//			}
 //
-//		// construct the bundle and start the experiment activity
-//		Bundle b = new Bundle();
-//		b.putParcelable("setup", new ExperimentSetup(subjectID, controlMethod, trials));
-//		Intent i = new Intent(getApplicationContext(), TouchModeActivity.class);
-//		i.putExtras(b);
-//		startActivity(i);
-		ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
-			@Override
-			public void onExperimentStart() {
-				Log.e("ExperimentCoordinator", "onExperimentStart");
-			}
-
-			@Override
-			public void onNewTrial(int trial, ExperimentAction action) {
-				Log.e("ExperimentCoordinator", "onNewTrial: " + trial + " " + action);
-				lblCurrentAction.setText(action.toString());
-			}
-
-			@Override
-			public void onIncorrectAction(int trial, ExperimentAction action) {
-				Log.e("ExperimentCoordinator", "onIncorrectAction: " + trial + " " + action);
-			}
-
-			@Override
-			public void onExperimentFinished(ExperimentResult result) {
-				Log.e("ExperimentCoordinator", "onExperimentFinished");
-				lblCurrentAction.setText("-Experiment Finished-");
-				for(int i = 0; i < result.getDurationEachTrial().length; i++) {
-					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getDurationEachTrial()[i] + "ms");
-				}
-
-				for(int i = 0; i < result.getIncorrectActionEachTrial().length; i++) {
-					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getIncorrectActionEachTrial()[i] + " incorrect actions");
-				}
-
-				ExperimentResultExporter.write(result);
-			}
-		};
-
-		ExperimentSetup setup = new ExperimentSetup("99", ControlMethod.TOUCH, 10);
-
-		coord = new ExperimentCoordinator(setup, callback);
-
-		coord.startExperiment();
+//			@Override
+//			public void onNewTrial(int trial, ExperimentAction action) {
+//				Log.e("ExperimentCoordinator", "onNewTrial: " + trial + " " + action);
+//				lblCurrentAction.setText(action.toString());
+//			}
+//
+//			@Override
+//			public void onIncorrectAction(int trial, ExperimentAction action) {
+//				Log.e("ExperimentCoordinator", "onIncorrectAction: " + trial + " " + action);
+//			}
+//
+//			@Override
+//			public void onExperimentFinished(ExperimentResult result) {
+//				Log.e("ExperimentCoordinator", "onExperimentFinished");
+//				lblCurrentAction.setText("-Experiment Finished-");
+//				for(int i = 0; i < result.getDurationEachTrial().length; i++) {
+//					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getDurationEachTrial()[i] + "ms");
+//				}
+//
+//				for(int i = 0; i < result.getIncorrectActionEachTrial().length; i++) {
+//					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getIncorrectActionEachTrial()[i] + " incorrect actions");
+//				}
+//
+//				ExperimentResultExporter.write(result);
+//			}
+//		};
+//
+//		ExperimentSetup setup = new ExperimentSetup("99", ControlMethod.TOUCH, 10);
+//
+//		coord = new ExperimentCoordinator(setup, callback);
+//
+//		coord.startExperiment();
 	}
 
 	/** Called when the "Exit" button is pressed. */

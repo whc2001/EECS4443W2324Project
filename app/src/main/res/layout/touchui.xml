@@ -59,6 +59,7 @@
 
             <!-- Share Button -->
             <ImageButton
+                android:id="@+id/share_button"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_marginTop="16dp"
@@ -66,7 +67,16 @@
                 android:contentDescription="@string/share_button_description"
                 android:padding="10dp"
                 android:src="@drawable/arrowblank" />
-
         </LinearLayout>
+
+        <!-- Text UI in the center of the screen -->
+        <TextView
+            android:id="@+id/touchuitextdisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </FrameLayout>
 </LinearLayout>
