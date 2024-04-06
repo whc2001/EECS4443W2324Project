@@ -102,6 +102,7 @@ public class TiltModeActivity extends Activity {
                 if(menuOpening)
                 {
                     coord.performAction(ExperimentAction.COMMENT);
+                    updateMenuVisibility(false);
                 }
                 else
                 {
@@ -114,10 +115,11 @@ public class TiltModeActivity extends Activity {
                 if(menuOpening)
                 {
                     coord.performAction(ExperimentAction.SHARE);
+                    updateMenuVisibility(false);
                 }
                 else
                 {
-                    scrollPrev();
+                    scrollNext();
                 }
             }
             else if(direction == TiltDirection.LEFT)
@@ -125,14 +127,12 @@ public class TiltModeActivity extends Activity {
                 if(menuOpening)
                 {
                     //close the menu here
-                    menuOpening = false;
-                    updateMenuVisibility();
+                    updateMenuVisibility(false);
                 }
                 else
                 {
                     //open the menu here
-                    menuOpening = true;
-                    updateMenuVisibility();
+                    updateMenuVisibility(true);
                 }
             }
             else if(direction == TiltDirection.RIGHT)
@@ -140,6 +140,7 @@ public class TiltModeActivity extends Activity {
                 if(menuOpening)
                 {
                     coord.performAction(ExperimentAction.LIKE);
+                    updateMenuVisibility(false);
                 }
                 else
                 {
@@ -149,7 +150,8 @@ public class TiltModeActivity extends Activity {
 
         }
     };
-    private void updateMenuVisibility() {
+    private void updateMenuVisibility(boolean menuOpening) {
+        this.menuOpening = menuOpening;
         int visibility = menuOpening ? View.VISIBLE : View.GONE;
         imgTop.setVisibility(visibility);
         imgBottom.setVisibility(visibility);
@@ -194,12 +196,10 @@ public class TiltModeActivity extends Activity {
     };
 
     public void scrollNext() {
-        coord.performAction(ExperimentAction.NEXT);
         vpContent.setCurrentItem(currentPage + 1, true);
     }
 
     public void scrollPrev() {
-        coord.performAction(ExperimentAction.PREVIOUS);
         vpContent.setCurrentItem(currentPage - 1, true);
     }
 
@@ -233,8 +233,7 @@ public class TiltModeActivity extends Activity {
         imgBottom = findViewById(R.id.imgBottom);
         imgLeft = findViewById(R.id.imgLeft);
         imgRight = findViewById(R.id.imgRight);
-        menuOpening = false;
-        updateMenuVisibility();
+        updateMenuVisibility(false);
         // Retrieve the passed ExperimentSetup object
         setup = getIntent().getParcelableExtra("setup");
 
@@ -274,6 +273,8 @@ public class TiltModeActivity extends Activity {
         });
         vpContent.setCurrentItem(currentPage, false);
         vpContent.registerOnPageChangeCallback(onPageChange);
+        // Disable touch scrolling on the ViewPager2
+        vpContent.setUserInputEnabled(false);
 
         // Initialize sensor
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
