@@ -24,6 +24,12 @@ public class ExperimentSetupActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setup);
 
+		if(savedInstanceState != null && savedInstanceState.getBoolean("exit"))
+		{
+			super.onDestroy();
+			this.finish();
+		}
+
 		cmbSubjectID = (Spinner) findViewById(R.id.cmbSubjectID);
 		cmbSubjectID.setAdapter(new ArrayAdapter<CharSequence>(this, R.layout.spinnerstyle, SUBJECT_ID));
 		cmbSubjectID.setSelection(0);
