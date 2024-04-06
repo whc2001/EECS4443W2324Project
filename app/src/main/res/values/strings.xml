@@ -4,9 +4,11 @@
     <string name="app_name">Tilt-Controlled TikTok Experiment</string>
     <string name="setuptitletext">Tilt-Controlled\nTikTok\nExperiment</string>
     <string name="setuptitlesubtext">EECS 4443 W23-24\nGroup R</string>
+
     <string name="paramlabelsubjectid">Subject #</string>
     <string name="setupitemcontrolmethod">Control Method</string>
     <string name="setupitemtrials">Trials</string>
+
     <string name="button01text">OK</string>
     <string name="button03text">EXIT</string>
 
@@ -14,4 +16,13 @@
     <string name="like_button_description">a like button</string>
     <string name="comment_button_description">a comment button</string>
     <string name="share_button_description">a share button</string>
+
+    <string name="result_title">Experiment Finished</string>
+    <string name="result_sub_title">Thank you for participating!</string>
+
+    <string name="result_label_average_time">Average Time: </string>
+    <string name="result_label_incorrect_actions">Incorrect Actions Done: </string>
+    <string name="result_label_average_accuracy">Average Accuracy: </string>
+
+    <string name="result_button_back">BACK</string>
 </resources>

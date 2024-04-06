@@ -2,7 +2,10 @@ package ca.yorku.eecs.groupr.tilttiktok;
 
 // Class for storing experiment results
 
-public class ExperimentResult {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ExperimentResult implements Parcelable {
     private ExperimentSetup setup;
     private long experimentStartTime;
     private long[] durationEachTrial;
@@ -29,5 +32,40 @@ public class ExperimentResult {
 
     public int[] getIncorrectActionEachTrial() {
         return incorrectActionEachTrial;
+    }
+
+    public ExperimentResult() {
+    }
+
+    protected ExperimentResult(Parcel in) {
+        setup = in.readParcelable(ExperimentSetup.class.getClassLoader());
+        experimentStartTime = in.readLong();
+        durationEachTrial = in.createLongArray();
+        incorrectActionEachTrial = in.createIntArray();
+    }
+
+    public static final Creator<ExperimentResult> CREATOR = new Creator<ExperimentResult>() {
+        @Override
+        public ExperimentResult createFromParcel(Parcel in) {
+            return new ExperimentResult(in);
+        }
+
+        @Override
+        public ExperimentResult[] newArray(int size) {
+            return new ExperimentResult[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeParcelable(setup, i);
+        parcel.writeLong(experimentStartTime);
+        parcel.writeLongArray(durationEachTrial);
+        parcel.writeIntArray(incorrectActionEachTrial);
     }
 }

@@ -22,13 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ca.yorku.eecs.groupr.tilttiktok.ExperimentActivity"
-            android:label="@string/app_name"
+            android:name="ca.yorku.eecs.groupr.tilttiktok.TouchModeActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="ca.yorku.eecs.groupr.tilttiktok.TouchModeActivity"
-            android:label="@string/app_name"
+            android:name="ca.yorku.eecs.groupr.tilttiktok.ExperimentResultActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
     </application>
