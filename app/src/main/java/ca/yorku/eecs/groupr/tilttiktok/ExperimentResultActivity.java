@@ -61,6 +61,7 @@ public class ExperimentResultActivity extends Activity {
     {
         // Tell the main activity to exit
         Intent intent = new Intent(this, ExperimentSetupActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("exit", true);
         startActivity(intent);
 

@@ -24,10 +24,11 @@ public class ExperimentSetupActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setup);
 
-		if(savedInstanceState != null && savedInstanceState.getBoolean("exit"))
+		if(getIntent().getBooleanExtra("exit", false))
 		{
 			super.onDestroy();
 			this.finish();
+			return;
 		}
 
 		cmbSubjectID = (Spinner) findViewById(R.id.cmbSubjectID);
