@@ -115,15 +115,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"></Button>
 
             <Button
-                android:id="@+id/btnOK2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnOK2_Click"
-                android:text="@string/button02text"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-
-            <Button
                 android:id="@+id/btnExit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -132,76 +123,5 @@
                 android:text="@string/button03text"
                 android:textAppearance="?android:attr/textAppearanceMedium"></Button>
         </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/lblCurrentAction"
-                android:gravity="center"
-                android:paddingRight="5dp"
-                android:text="-"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnPrev"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnPrev_Click"
-                android:text="PREV"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnNext_Click"
-                android:text="NEXT"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-
-            <Button
-                android:id="@+id/btnLike"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnLike_Click"
-                android:text="LIKE"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-
-            <Button
-                android:id="@+id/btnComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnComment_Click"
-                android:text="COMM"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-
-            <Button
-                android:id="@+id/btnShare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btnShare_Click"
-                android:text="SHAR"
-                android:textAppearance="?android:attr/textAppearanceMedium"></Button>
-        </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>
