@@ -4,18 +4,15 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,34 +29,36 @@ public class TouchModeActivity extends Activity {
 
     private int currentPage = 1;    // Start from the second page, which is the first real page
 
-    private SensorManager sm;
-    private Sensor gyro;
-    private TiltDirectionListener tdl;
-
     private ExperimentSetup setup;
+    private ExperimentCoordinator coord;
+
+    private SoundEffect se;
+
+    // Don't auto scroll to next if the last action was NEXT or PREVIOUS or experiment beginning
+    private boolean coordLastShouldNotScroll = true;
+    // Don't send scroll events if the last scroll was caused by the coordinator
+    private boolean coordIgnoreLastScroll = false;
 
     private ViewPager2 vpContent;
-    private ImageButton likeButton, commentButton, shareButton;
-    private boolean isLiked, isCommented, isShared;
-    ExperimentCoordinator coord;
-    TextView textDisplay;
+    private Button btnStart;
+    private ImageButton btnLike, btnComment, btnShare;
+    private boolean isLiked = false, isCommented = false, isShared = false;
+    TextView lblDisplay;
 
     private ViewPager2.OnPageChangeCallback onPageChange = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             super.onPageSelected(position);
-            if (position > currentPage) {
-                if(coord != null) {
+            // do not send scroll events if the last scroll was caused by the coordinator
+            if (!coordIgnoreLastScroll) {
+                if (position > currentPage) {
                     coord.performAction(ExperimentAction.NEXT);
-                }
-                Log.i(MYDEBUG, ">>>NEXT>>>");
-            } else if (position < currentPage) {
-                if(coord != null) {
+                } else if (position < currentPage) {
                     coord.performAction(ExperimentAction.PREVIOUS);
                 }
-                Log.i(MYDEBUG, "<<<PREV<<<");
             }
             currentPage = position;
+            coordIgnoreLastScroll = false;
         }
 
         @Override
@@ -86,6 +85,34 @@ public class TouchModeActivity extends Activity {
         }
     };
 
+    ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
+        @Override
+        public void onExperimentStart() {
+            Log.e("ExperimentCoordinator", "onExperimentStart");
+        }
+
+        @Override
+        public void onNewTrial(int trial, ExperimentAction action) {
+            se.correct();
+            coordIgnoreLastScroll = true;
+            if(!coordLastShouldNotScroll)
+                scrollNext();
+            lblDisplay.setText(action.toString());
+            coordLastShouldNotScroll = action == ExperimentAction.NEXT || action == ExperimentAction.PREVIOUS;
+        }
+
+        @Override
+        public void onIncorrectAction(int trial, ExperimentAction action) {
+            se.incorrect();
+        }
+
+        @Override
+        public void onExperimentFinished(ExperimentResult result) {
+            ExperimentResultExporter.write(result);
+            // transition to the finish activity
+        }
+    };
+
     public void scrollNext() {
         resetButtonStates();
         vpContent.setCurrentItem(currentPage + 1, true);
@@ -98,120 +125,76 @@ public class TouchModeActivity extends Activity {
 
     public void resetButtonStates() {
         isLiked = false;
-        likeButton.setImageResource(R.drawable.heart);
+        btnLike.setImageResource(R.drawable.heart);
 
         isCommented = false;
-        commentButton.setImageResource(R.drawable.message);
+        btnComment.setImageResource(R.drawable.message);
 
         isShared = false;
-        shareButton.setImageResource(R.drawable.arrowblank);
+        btnShare.setImageResource(R.drawable.arrowblank);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.touchui);
+
+        // Lock rotate
+        if (this.getDefaultDeviceOrientation() == Configuration.ORIENTATION_LANDSCAPE)
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // Initialize controls
+        lblDisplay = findViewById(R.id.lblDisplay);
+        vpContent = findViewById(R.id.vpContent);
+        btnStart = findViewById(R.id.btnStart);
+        btnLike = findViewById(R.id.btnLike);
+        btnComment = findViewById(R.id.btnComment);
+        btnShare = findViewById(R.id.btnShare);
+
         // Retrieve the passed ExperimentSetup object
         setup = getIntent().getParcelableExtra("setup");
 
-        textDisplay = (TextView) findViewById(R.id.touchuitextdisplay);
-        ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
-			@Override
-			public void onExperimentStart() {
-				Log.e("ExperimentCoordinator", "onExperimentStart");
-			}
+        // Initialize the ExperimentCoordinator
+        coord = new ExperimentCoordinator(setup, callback);
+        se = new SoundEffect(this);
 
-			@Override
-			public void onNewTrial(int trial, ExperimentAction action) {
-				Log.e("ExperimentCoordinator", "onNewTrial: " + trial + " " + action);
-				textDisplay.setText(action.toString());
-			}
-
-			@Override
-			public void onIncorrectAction(int trial, ExperimentAction action) {
-				Log.e("ExperimentCoordinator", "onIncorrectAction: " + trial + " " + action);
-			}
-
-			@Override
-			public void onExperimentFinished(ExperimentResult result) {
-				Log.e("ExperimentCoordinator", "onExperimentFinished");
-				textDisplay.setText("-Experiment Finished-");
-				for(int i = 0; i < result.getDurationEachTrial().length; i++) {
-					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getDurationEachTrial()[i] + "ms");
-				}
-
-				for(int i = 0; i < result.getIncorrectActionEachTrial().length; i++) {
-					Log.e("ExperimentCoordinator", "Trial " + i + ": " + result.getIncorrectActionEachTrial()[i] + " incorrect actions");
-				}
-
-				ExperimentResultExporter.write(result);
-			}
-		};
-
-		ExperimentSetup setup = new ExperimentSetup("99", ControlMethod.TOUCH, 10);
-		coord = new ExperimentCoordinator(setup, callback);
-		coord.startExperiment();
-
-        //onCreate set the states to false
-        isLiked = false;
-        isCommented = false;
-        isShared = false;
-
-        vpContent = findViewById(R.id.content_view);
-
-        likeButton = findViewById(R.id.like_button);
-        likeButton.setOnClickListener(new View.OnClickListener() {
+        // Attach the events for the buttons
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // scrollPrev();
-                // collect data
-                if(coord != null) {
-                    coord.performAction(ExperimentAction.LIKE);
-                }
-                // Toggle the state
+                btnStart.setVisibility(View.GONE);
+                lblDisplay.setVisibility(View.VISIBLE);
+                coord.startExperiment();
+            }
+        });
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coord.performAction(ExperimentAction.LIKE);
+
+                // Toggle the state and change the button image based on the new state
                 isLiked = !isLiked;
-                // Change the button image based on the new state
-                if (isLiked) {
-                    likeButton.setImageResource(R.drawable.heartfill);
-                } else {
-                    likeButton.setImageResource(R.drawable.heart);
-                }
+                btnLike.setImageResource(isLiked ? R.drawable.heartfill : R.drawable.heart);
             }
         });
-        commentButton = findViewById(R.id.comment_button);
-        commentButton.setOnClickListener(new View.OnClickListener() {
+        btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // scrollNext();
-                if(coord != null) {
-                    coord.performAction(ExperimentAction.COMMENT);
-                }
-                // Toggle the state
-                isCommented = !isCommented;
-                // Change the button image based on the new state
-                if (isCommented) {
-                    commentButton.setImageResource(R.drawable.messagefill);
-                } else {
-                    commentButton.setImageResource(R.drawable.message);
-                }
-            }
-        });
+                coord.performAction(ExperimentAction.COMMENT);
 
-        shareButton = findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
+                // Toggle the state and change the button image based on the new state
+                isCommented = !isCommented;
+                btnComment.setImageResource(isCommented ? R.drawable.messagefill : R.drawable.message);
+            }
+        });
+        btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // scrollNext();
-                if(coord != null) {
-                    coord.performAction(ExperimentAction.SHARE);
-                }
-                // Toggle the state
+                coord.performAction(ExperimentAction.SHARE);
+                // Toggle the state and change the button image based on the new state
                 isShared = !isShared;
-                // Change the button image based on the new state
-                if (isShared) {
-                    shareButton.setImageResource(R.drawable.arrowfill);
-                } else {
-                    shareButton.setImageResource(R.drawable.arrowblank);
-                }
+                btnShare.setImageResource(isShared ? R.drawable.arrowfill : R.drawable.arrowblank);
             }
         });
 
@@ -238,30 +221,6 @@ public class TouchModeActivity extends Activity {
         });
         vpContent.setCurrentItem(currentPage, false);
         vpContent.registerOnPageChangeCallback(onPageChange);
-
-
-        // get experiment setup
-        setup = getIntent().getExtras().getParcelable("setup");
-
-        // lock rotate
-        if (this.getDefaultDeviceOrientation() == Configuration.ORIENTATION_LANDSCAPE)
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        if (setup.getControlMethod() == ControlMethod.TILT) {
-            sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-            gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-            if (gyro == null) {
-                Toast.makeText(this, "Sensor error, the experiment cannot be performed in tilt mode.", Toast.LENGTH_LONG).show();
-                this.finish();
-            }
-            tdl = new TiltDirectionListener(new TiltDirectionListener.ITiltDirectionCallback() {
-                @Override
-                public void onTiltDirection(TiltDirection direction) {
-                    Log.i(MYDEBUG, direction.toString());
-                }
-            });
-        }
     }
 
     /*
@@ -284,21 +243,19 @@ public class TouchModeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (setup.getControlMethod() == ControlMethod.TILT) {
-            sm.registerListener(tdl, gyro, SensorManager.SENSOR_DELAY_GAME);
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (setup.getControlMethod() == ControlMethod.TILT) {
-            sm.unregisterListener(tdl);
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        try {
+            se.finalize();
+        } catch (Throwable e) {
+        }
     }
 }

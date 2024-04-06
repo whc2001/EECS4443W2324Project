@@ -8,9 +8,9 @@
     <string name="setupitemcontrolmethod">Control Method</string>
     <string name="setupitemtrials">Trials</string>
     <string name="button01text">OK</string>
-    <string name="button02text">OK2</string>
     <string name="button03text">EXIT</string>
 
+    <string name="start_experiment_button_text">Start Experiment</string>
     <string name="like_button_description">a like button</string>
     <string name="comment_button_description">a comment button</string>
     <string name="share_button_description">a share button</string>
