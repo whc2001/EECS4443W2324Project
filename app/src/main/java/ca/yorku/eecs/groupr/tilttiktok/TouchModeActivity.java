@@ -1,6 +1,7 @@
 package ca.yorku.eecs.groupr.tilttiktok;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -34,8 +35,8 @@ public class TouchModeActivity extends Activity {
 
     private SoundEffect se;
 
-    // Don't auto scroll to next if the last action was NEXT or PREVIOUS or experiment beginning
-    private boolean coordLastShouldNotScroll = true;
+    // Don't auto scroll to next if the last action was NEXT or PREVIOUS
+    private boolean coordLastShouldNotScroll = false;
     // Don't send scroll events if the last scroll was caused by the coordinator
     private boolean coordIgnoreLastScroll = false;
 
@@ -87,8 +88,9 @@ public class TouchModeActivity extends Activity {
 
     ExperimentCoordinatorCallback callback = new ExperimentCoordinatorCallback() {
         @Override
-        public void onExperimentStart() {
-            Log.e("ExperimentCoordinator", "onExperimentStart");
+        public void onExperimentStart(int currentTrial, ExperimentAction action) {
+            lblDisplay.setText(action.toString());
+            coordLastShouldNotScroll = action == ExperimentAction.NEXT || action == ExperimentAction.PREVIOUS;
         }
 
         @Override
@@ -108,8 +110,16 @@ public class TouchModeActivity extends Activity {
 
         @Override
         public void onExperimentFinished(ExperimentResult result) {
-            ExperimentResultExporter.write(result);
+            se.correct();
+
             // transition to the finish activity
+            Intent intent = new Intent(TouchModeActivity.this, ExperimentResultActivity.class);
+            intent.putExtra("result", result);
+            startActivity(intent);
+
+            // close self
+            TouchModeActivity.super.onDestroy();
+            finish();
         }
     };
 

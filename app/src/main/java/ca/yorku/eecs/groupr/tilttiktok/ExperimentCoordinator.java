@@ -50,10 +50,9 @@ public class ExperimentCoordinator {
     public void startExperiment() {
         initializeRandomActions();
         isExperimentRunning = true;
-        experimentStartTime = System.currentTimeMillis();
         currentTrial = 0;
-        callback.onExperimentStart();
-        startNextTrial();
+        experimentStartTime = currentTrialStartTime = System.currentTimeMillis();
+        callback.onExperimentStart(currentTrial, experimentActions[currentTrial]);
     }
 
     public void endExperiment() {
